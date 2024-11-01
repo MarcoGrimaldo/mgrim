@@ -14,10 +14,10 @@ import { LinkedIn, GitHub, Twitter, Email } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import image from '../../assets/image.png';
 
-const AboutMe = () => {
+const AboutMe = ({ forwardedRef }) => {
   const { t } = useTranslation();
   return (
-    <Box sx={{ bgcolor: 'background.default', color: 'text.primary', py: 5 }}>
+    <Box sx={{ bgcolor: 'background.default', color: 'text.primary', py: 5 }} ref={forwardedRef}>
       <Container maxWidth="md">
         {/* Header Section */}
         <Grid container spacing={3} alignItems="center" justifyContent="center">

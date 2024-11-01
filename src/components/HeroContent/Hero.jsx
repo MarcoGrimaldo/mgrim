@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-function HeroSection() {
+function HeroSection({ handleButton }) {
   const { t } = useTranslation();
   return (
     <Box
@@ -22,7 +22,7 @@ function HeroSection() {
       <Typography variant="subtitle1" sx={{ mb: 3 }}>
         {t('hero.description')}
       </Typography>
-      <Button variant="contained" color="primary">
+      <Button variant="contained" color="primary" onClick={handleButton}>
         {t('hero.button')}
       </Button>
     </Box>
