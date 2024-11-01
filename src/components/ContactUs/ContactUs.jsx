@@ -17,7 +17,7 @@ const ContactForm = () => {
           color: 'white',
           p: 3,
           position: 'absolute',
-          top: '305vh',
+          top: '345%',
           height: '30%',
           right: '52%',
           zIndex: 2,

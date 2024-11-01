@@ -35,20 +35,23 @@ const AboutMe = ({ forwardedRef }) => {
             <Typography variant="subtitle1" sx={{ color: 'text.primaryLight' }}>
               Full Stack Web Developer
             </Typography>
-            <Button variant="contained" color="primary" sx={{ mt: 2, mr: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ mt: 2, mr: 2 }}
+              href="https://drive.google.com/file/d/1ahd1HfaaDtEtjujHnFJLLOkVrjI7Loae/view?usp=sharing">
               {t('aboutMe.resumeButton')}
             </Button>
             <Box mt={2}>
-              <IconButton href="https://linkedin.com" color="primary">
+              <IconButton
+                href="https://www.linkedin.com/in/marco-a-grimaldo-peralta-83468a1a2/"
+                color="primary">
                 <LinkedIn />
               </IconButton>
-              <IconButton href="https://github.com" color="primary">
+              <IconButton href="https://github.com/MarcoGrimaldo" color="primary">
                 <GitHub />
               </IconButton>
-              <IconButton href="https://twitter.com" color="primary">
-                <Twitter />
-              </IconButton>
-              <IconButton href="mailto:your.email@example.com" color="primary">
+              <IconButton href="mailto:mgrimdev@gmail.com" color="primary">
                 <Email />
               </IconButton>
             </Box>
