@@ -14,10 +14,10 @@ import { LinkedIn, GitHub, Twitter, Email } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import image from '../../assets/image.png';
 
-const AboutMe = () => {
+const AboutMe = ({ forwardedRef }) => {
   const { t } = useTranslation();
   return (
-    <Box sx={{ bgcolor: 'background.default', color: 'text.primary', py: 5 }}>
+    <Box sx={{ bgcolor: 'background.default', color: 'text.primary', py: 5 }} ref={forwardedRef}>
       <Container maxWidth="md">
         {/* Header Section */}
         <Grid container spacing={3} alignItems="center" justifyContent="center">
@@ -35,20 +35,23 @@ const AboutMe = () => {
             <Typography variant="subtitle1" sx={{ color: 'text.primaryLight' }}>
               Full Stack Web Developer
             </Typography>
-            <Button variant="contained" color="primary" sx={{ mt: 2, mr: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{ mt: 2, mr: 2 }}
+              href="https://drive.google.com/file/d/1ahd1HfaaDtEtjujHnFJLLOkVrjI7Loae/view?usp=sharing">
               {t('aboutMe.resumeButton')}
             </Button>
             <Box mt={2}>
-              <IconButton href="https://linkedin.com" color="primary">
+              <IconButton
+                href="https://www.linkedin.com/in/marco-a-grimaldo-peralta-83468a1a2/"
+                color="primary">
                 <LinkedIn />
               </IconButton>
-              <IconButton href="https://github.com" color="primary">
+              <IconButton href="https://github.com/MarcoGrimaldo" color="primary">
                 <GitHub />
               </IconButton>
-              <IconButton href="https://twitter.com" color="primary">
-                <Twitter />
-              </IconButton>
-              <IconButton href="mailto:your.email@example.com" color="primary">
+              <IconButton href="mailto:mgrimdev@gmail.com" color="primary">
                 <Email />
               </IconButton>
             </Box>
