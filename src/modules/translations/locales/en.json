@@ -1,0 +1,46 @@
+{
+  "hero": {
+    "welcome": "Hey, welcome!",
+    "description": "This is my personal website, here you can find my personal and professional projects, if you want to contact me and learn about me, every day I learn something new there will be an update here.",
+    "button": "About Me"
+  },
+  "projects": {
+    "title": "Projects"
+  },
+  "aboutMe": {
+    "name": "Marco Grimaldo",
+    "resumeButton": "Resume",
+    "aboutMeTitle": "About Me",
+    "aboutMeText": "I am a passionate full-stack developer skilled in creating modern web applications with React, Node.js, and other cutting-edge technologies. I aim to build scalable and efficient solutions that enhance user experiences. Outside of programming, I enjoy diving into video games and staying active with sports, which sharpens my creativity and teamwork skills.",
+    "educationTitle": "Education",
+    "educationText": "Bachelor’s Degree in Computer Systems Engineering",
+    "educationSchool": "Escuela Superior de Computo (IPN)",
+    "workExpTitle": "Work Experience",
+    "workExpPSL_comp": "PSL Group",
+    "workExpPSL_pos": "Application Developer",
+    "workExpPSL_time": "January 2022 - Present",
+    "workExpPSL_resume": "I work on the development and maintenance of web applications using JavaScript, React, and Node.js. I collaborated with cross-functional teams to deliver high-quality software solutions.",
+    "workExpVey_comp": "Veyron",
+    "workExpVey_pos": "Developer",
+    "workExpVey_time": "June 2021 - January 2022",
+    "workExpVey_resume": "Competent developer in IFS ERP, PL/SQL, .NET, C# and Microsoft Azure. Expert in optimizing business systems and developing solid solutions that improve operational efficiency.",
+    "workExpCii_comp": "CIITA Chihuahua",
+    "workExpCii_pos": "Front End Developer",
+    "workExpCii_time": "February 2021 - September 2021",
+    "workExpCii_resume": "Web developer experienced in React, Node.js, and PostgreSQL, dedicated to building and maintaining dynamic features for the main website. Competent in developing full-stack applications that enhance user interaction and streamline backend processes, ensuring solid, scalable, and efficient web solutions."
+  },
+  "contactMe": {
+    "title": "Contact Me!",
+    "location": "Mexico",
+    "email": "mgrimdev@gmail.com",
+    "phoneNum": "+335615892105",
+    "moreInfo": "More Information",
+    "nameInput": "Your Name",
+    "emailInput": "Your Email",
+    "msgInput": "Typing your Message here...",
+    "send": "Send"
+  },
+  "footer": {
+    "text": "Marco Grimaldo. All rights reserved."
+  }
+}

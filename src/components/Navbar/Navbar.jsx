@@ -10,14 +10,20 @@ import CodeIcon from '@mui/icons-material/Code';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useThemeContext } from '../../modules/theme/theme';
+import { useTranslation } from 'react-i18next';
 
 export default function ButtonAppBar() {
-  const [age, setAge] = useState('Inglish');
-  const [theme, setTheme] = useState(true);
+  const { i18n } = useTranslation();
+
+  const [theme, setTheme] = useState(false);
   const { toggleTheme } = useThemeContext();
 
+  const changeLanguage = (language) => {
+    i18n.changeLanguage(language);
+  };
+
   const handleChangeSelect = (event) => {
-    setAge(event.target.value);
+    changeLanguage(event.target.value);
   };
   const handleChangeTheme = () => {
     setTheme(!theme);
@@ -43,10 +49,11 @@ export default function ButtonAppBar() {
           <IconButton sx={{ mr: 2 }} onClick={handleChangeTheme}>
             {theme ? <WbSunnyIcon /> : <DarkModeIcon />}
           </IconButton>
-          <Select label="Age" onChange={handleChangeSelect} defaultValue={10}>
-            <MenuItem value={10}>Inglish</MenuItem>
-            <MenuItem value={20}>Spanish</MenuItem>
-            <MenuItem value={30}>Japanese</MenuItem>
+          <Select label="Age" onChange={handleChangeSelect} defaultValue={'en'}>
+            <MenuItem value={'en'}>English 🇺🇸🇬🇧</MenuItem>
+            <MenuItem value={'es'}>Español 🇲🇽</MenuItem>
+            <MenuItem value={'it'}>Italiano 🇮🇹</MenuItem>
+            <MenuItem value={'jp'}>日本語 🇯🇵</MenuItem>
           </Select>
         </Toolbar>
       </AppBar>
