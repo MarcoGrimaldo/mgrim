@@ -1,0 +1,46 @@
+{
+  "hero": {
+    "welcome": "こんにちは、ようこそ！",
+    "description": "これは私の個人ウェブサイトです。ここでは、個人的なプロジェクトとプロフェッショナルなプロジェクトを見つけることができます。私に連絡を取りたい場合や私についての情報が必要な場合、新しいことを学ぶたびにここで更新があります。",
+    "button": "私について"
+  },
+  "projects": {
+    "title": "プロジェクト"
+  },
+  "aboutMe": {
+    "name": "マルコ・グリマルド (Marco Grimaldo)",
+    "resumeButton": "履歴書",
+    "aboutMeTitle": "私について",
+    "aboutMeText": "私は情熱的なフルスタック開発者で、React、Node.js、その他の最先端技術を使用してモダンなWebアプリケーションを作成するスキルがあります。ユーザーエクスペリエンスを向上させるスケーラブルで効率的なソリューションを構築することを目指しています。プログラミングの外では、ビデオゲームに没頭したり、スポーツでアクティブに過ごすことで、創造性とチームワークのスキルを磨いています。",
+    "educationTitle": "教育",
+    "educationText": "コンピューターシステム工学士",
+    "educationSchool": "エスクエラ・スペリオール・デ・コンピュート（IPN）",
+    "workExpTitle": "職歴",
+    "workExpPSL_comp": "PSL グループ",
+    "workExpPSL_pos": "アプリケーション開発者",
+    "workExpPSL_time": "2022年1月 - 現在",
+    "workExpPSL_resume": "JavaScript、React、Node.jsを使用したWebアプリケーションの開発と保守に従事しました。高品質なソフトウェアソリューションを提供するために、横断的なチームと協力しました。",
+    "workExpVey_comp": "ベイロン",
+    "workExpVey_pos": "開発者",
+    "workExpVey_time": "2021年6月 - 2022年1月",
+    "workExpVey_resume": "IFS ERP、PL/SQL、.NET、C#、Microsoft Azureに熟練した開発者です。ビジネスシステムを最適化し、運用効率を向上させる堅牢なソリューションを開発する専門家です。",
+    "workExpCii_comp": "CIITA チワワ",
+    "workExpCii_pos": "フロントエンド開発者",
+    "workExpCii_time": "2021年2月 - 2021年9月",
+    "workExpCii_resume": "React、Node.js、PostgreSQLに経験があるWeb開発者で、メインのウェブサイトのダイナミックな機能の構築と維持に尽力しています。ユーザーインタラクションを強化し、バックエンドプロセスを合理化するフルスタックアプリケーションの開発に熟練しており、堅牢でスケーラブルで効率的なWebソリューションを保証します。"
+  },
+  "contactMe": {
+    "title": "連絡先",
+    "location": "メキシコ",
+    "email": "mgrimdev@gmail.com",
+    "phoneNum": "+335615892105",
+    "moreInfo": "詳細情報",
+    "nameInput": "あなたの名前",
+    "emailInput": "あなたのメール",
+    "msgInput": "ここにメッセージを入力...",
+    "send": "送信"
+  },
+  "footer": {
+    "text": "マルコ・グリマルド (Marco Grimaldo)。全著作権所有。"
+  }
+}

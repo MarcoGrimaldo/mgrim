@@ -2,8 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 import Card from './Card';
+import { useTranslation } from 'react-i18next';
 
 const Projects = (props) => {
+  const { t } = useTranslation();
   return (
     <Box
       sx={{
@@ -14,7 +16,7 @@ const Projects = (props) => {
         color: 'text.primary'
       }}>
       <Typography variant="h3" sx={{ paddingBlock: '2rem', textAlign: 'center' }}>
-        Proyects
+        {t('projects.title')}
       </Typography>
       <Box
         sx={{

@@ -1,7 +1,9 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 function HeroSection() {
+  const { t } = useTranslation();
   return (
     <Box
       sx={{
@@ -15,14 +17,13 @@ function HeroSection() {
         p: 4
       }}>
       <Typography variant="h3" component="h1" gutterBottom>
-        Website SEO Analyst
+        {t('hero.welcome')}
       </Typography>
       <Typography variant="subtitle1" sx={{ mb: 3 }}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-        labore et dolore magna aliqua.
+        {t('hero.description')}
       </Typography>
       <Button variant="contained" color="primary">
-        Learn More
+        {t('hero.button')}
       </Button>
     </Box>
   );
