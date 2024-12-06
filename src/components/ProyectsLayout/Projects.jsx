@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Box, Typography } from '@mui/material';
 import Card from './Card';
 import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchProjects } from '../../redux/projectsSlice';
 
 const Projects = (props) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { projects, status, error } = useSelector((state) => state.projects);
+
+  useEffect(() => {
+    if (status === 'idle') {
+      dispatch(fetchProjects());
+    }
+  }, [dispatch, status]);
+
+  if (status === 'loading') {
+    return <Typography>Loading...</Typography>;
+  }
+
+  if (status === 'failed') {
+    return <Typography>Error: {error}</Typography>;
+  }
   return (
     <Box
       sx={{
@@ -26,24 +44,18 @@ const Projects = (props) => {
           overflow: 'auto',
           whiteSpace: 'nowrap'
         }}>
-        <Card
-          title={'Test'}
-          img={'https://picsum.photos/200/300/'}
-          text={'Teeeeee e e e e e e est'}
-          likesCount={'32'}
-        />
-        <Card
-          title={'Test'}
-          img={'https://picsum.photos/200/300/'}
-          text={'Teeeeee e e e e e e est'}
-          likesCount={'32'}
-        />
-        <Card
-          title={'Test'}
-          img={'https://picsum.photos/200/300/'}
-          text={'Teeeeee e e e e e e est'}
-          likesCount={'32'}
-        />
+        {projects.map((project) => (
+          <Card
+            key={project.id}
+            id={project.id}
+            title={project.name}
+            img={project.img}
+            text={project.description}
+            likesCount={project.likes}
+            link={project.link}
+            btnText={t('projects.btnSee')}
+          />
+        ))}
       </Box>
     </Box>
   );

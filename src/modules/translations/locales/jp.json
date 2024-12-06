@@ -5,7 +5,8 @@
     "button": "私について"
   },
   "projects": {
-    "title": "プロジェクト"
+    "title": "プロジェクト",
+    "btnSee": "見る"
   },
   "aboutMe": {
     "name": "マルコ・グリマルド (Marco Grimaldo)",

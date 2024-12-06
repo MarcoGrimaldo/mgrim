@@ -39,7 +39,7 @@ const AboutMe = ({ forwardedRef }) => {
               variant="contained"
               color="primary"
               sx={{ mt: 2, mr: 2 }}
-              href="https://drive.google.com/file/d/1ahd1HfaaDtEtjujHnFJLLOkVrjI7Loae/view?usp=sharing">
+              href="https://drive.google.com/file/d/14umQQ5LB45GnzNXQ45PkBdgin7QNDfcw/view?usp=sharing">
               {t('aboutMe.resumeButton')}
             </Button>
             <Box mt={2}>

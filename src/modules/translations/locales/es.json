@@ -5,7 +5,8 @@
     "button": "Acerca de mí"
   },
   "projects": {
-    "title": "Proyectos"
+    "title": "Proyectos",
+    "btnSee": "Ver"
   },
   "aboutMe": {
     "name": "Marco Grimaldo",
