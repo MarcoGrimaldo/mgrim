@@ -2,31 +2,12 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ShikiCodeBlock } from "@/components/shiki-code-block";
-
-// --- Problem text (Project Euler #3) ---
-const problemDescription = `
-The prime factors of 13195 are 5, 7, 13 and 29.
-
-What is the largest prime factor of the number 600851475143?
-`;
-
-const explanation = `
-Approach:
-1. Start with the smallest prime factor (2).
-2. While factor * factor ≤ number:
-     • If number is divisible by factor, divide it out completely.
-     • Otherwise, move to the next factor.
-3. When the loop ends, the remaining number is the largest prime factor.
-
-Why it works:
-Each time a factor divides the number, we reduce the problem to a smaller quotient.
-By the time factor² exceeds the number, any remaining quotient must itself be prime.
-This algorithm runs efficiently in O(√n).
-`;
+import { renderMath } from "@/lib/renderMath";
 
 // --- Solver ---
 function largestPrimeFactor(number: number): number {
@@ -63,6 +44,12 @@ export default function ProjectEuler3Page() {
   const [result, setResult] = useState<number | null>(null);
   const [isCalculated, setIsCalculated] = useState(false);
 
+  const sampleNumber = renderMath(`13195`);
+  const sampleFactors = renderMath(`5,\\ 7,\\ 13,\\ 29`);
+  const targetNumber = renderMath(`600851475143`);
+  const factorConstraint = renderMath(`f^2 \\leq n`);
+  const complexity = renderMath(`O(\\sqrt{n})`);
+
   const handleTest = () => {
     const num = parseInt(input, 10);
     if (!isNaN(num) && num > 1) {
@@ -80,7 +67,7 @@ export default function ProjectEuler3Page() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-10 px-4 rounded-lg -mt-20">
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-zinc-900 dark:to-zinc-900/60 py-10 px-4 rounded-lg -mt-20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -94,17 +81,26 @@ export default function ProjectEuler3Page() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            Project Euler Problem 3 — Largest Prime Factor
+            Problem 3: Largest Prime Factor
           </motion.h1>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
           >
-            <div className="prose p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-              <pre className="whitespace-pre-wrap mb-3 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white">
-                {problemDescription}
-              </pre>
+            <div className="prose dark:prose-invert max-w-none">
+              <p>
+                The integer{" "}
+                <span dangerouslySetInnerHTML={{ __html: sampleNumber }} /> has
+                prime factors{" "}
+                <span dangerouslySetInnerHTML={{ __html: sampleFactors }} />,
+                making it easy to verify the algorithm by hand.
+              </p>
+              <p>
+                The actual Euler prompt asks for the largest prime factor of{" "}
+                <span dangerouslySetInnerHTML={{ __html: targetNumber }} />. The
+                tester below lets you explore other inputs as well.
+              </p>
             </div>
           </motion.div>
         </Card>
@@ -119,10 +115,25 @@ export default function ProjectEuler3Page() {
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
               How to Solve
             </h2>
-            <div className="prose p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-              <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg whitespace-pre-wrap mb-2 text-gray-900 dark:text-white">
-                {explanation}
-              </pre>
+            <div className="prose dark:prose-invert max-w-none">
+              <p>
+                Start dividing the number by the smallest candidate factor (2),
+                stripping it out completely before moving on. Whenever a factor
+                does not divide the current value, increment the factor and try
+                again.
+              </p>
+              <p>
+                You can stop once{" "}
+                <span dangerouslySetInnerHTML={{ __html: factorConstraint }} />{" "}
+                no longer holds. At that point the remaining value must be
+                prime, so it is the largest factor.
+              </p>
+              <p>
+                Because the loop never tests factors above the square root of
+                the input, the algorithm runs in{" "}
+                <span dangerouslySetInnerHTML={{ __html: complexity }} /> time
+                with constant memory usage.
+              </p>
             </div>
 
             <Separator className="my-6" />
@@ -193,12 +204,22 @@ export default function ProjectEuler3Page() {
                 className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg"
               >
                 <p className="text-lg font-semibold text-blue-900 dark:text-blue-100">
-                  Largest prime factor of {input}: {result}
+                  Largest prime factor of {input}:{" "}
+                  <span className="text-green-400">{result}</span>
                 </p>
               </motion.div>
             )}
           </motion.div>
         </Card>
+
+        <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
+          <Button variant="outline" asChild>
+            <Link href="/notebook/project-euler-2">Previous Problem</Link>
+          </Button>
+          <Button asChild>
+            <Link href="/notebook/project-euler-4">Next Problem</Link>
+          </Button>
+        </div>
       </motion.div>
     </main>
   );

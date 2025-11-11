@@ -2,35 +2,47 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  largestPalindromeProduct,
-  largestPalindromeProductWithFactors,
-} from "./code";
+import { largestPalindromeProductWithFactors } from "./code";
 import { ShikiCodeBlock } from "@/components/shiki-code-block";
-
-// ---------- Problem text ----------
-const problemDescription = `
-A palindromic number reads the same both ways. The largest palindrome made from the
-product of two 2-digit numbers is 9009 = 91 × 99.
-
-Find the largest palindrome made from the product of two n-digit numbers.
-`;
-
-const explanation = `
-Key ideas:
-• Descend i and j from the top n-digit number (hi = 10^n - 1) to the bottom (lo = 10^(n-1)).
-• Prune early: if i * hi ≤ best, no larger product exists for this i → break the outer loop.
-• 11-divisibility trick: Every even-length palindrome is divisible by 11, so at least one factor
-  must be a multiple of 11. If i is not a multiple of 11, only test j that are multiples of 11.
-• For each i, iterate j downward (and only j ≥ i to avoid duplicate (i, j) / (j, i) pairs). As soon
-  as we find a palindrome, it's the largest for that i → break inner loop.
-`;
+import { renderMath } from "@/lib/renderMath";
 
 // We'll display the source taken from the external function:
-const codeSolution = largestPalindromeProduct.toString();
+const codeSolution = `
+function largestPalindromeProduct(n) {
+  const hi = Math.pow(10, n) - 1;
+  const lo = Math.pow(10, n - 1);
+  let best = 0;
+
+  for (let i = hi; i >= lo; i--) {
+    if (i * hi <= best) break;
+
+    let jStart, jStep;
+    if (i % 11 === 0) {
+      jStart = hi;
+      jStep = 1;
+    } else {
+      jStart = hi - (hi % 11);
+      jStep = 11;
+    }
+
+    for (let j = jStart; j >= i; j -= jStep) {
+      const prod = i * j;
+      if (prod <= best) break;
+
+      const s = String(prod);
+      if (s === s.split("").reverse().join("")) {
+        best = prod;
+        break;
+      }
+    }
+  }
+  return best;
+}
+`;
 
 /**
  * STATIC EXAMPLE TABLE FOR n = 3
@@ -229,6 +241,15 @@ export default function ProjectEuler4Page() {
   const [answer, setAnswer] = useState<number | null>(null);
   const [factors, setFactors] = useState<{ a: number; b: number } | null>(null);
 
+  const samplePalindrome = renderMath(`9009 = 91 \\times 99`);
+  const hiLabel = renderMath(`hi = 10^n - 1`);
+  const loLabel = renderMath(`lo = 10^{n-1}`);
+  const pruneCheck = renderMath(`i \\times hi \\le \\text{best}`);
+  const divisibilityHint = renderMath(`11`);
+  const iteratorI = renderMath(`i`);
+  const iteratorJ = renderMath(`j`);
+  const productExpression = renderMath(`i \\times j`);
+
   const handleCalc = () => {
     const n = parseInt(digits, 10);
     if (!isNaN(n) && n > 0) {
@@ -251,7 +272,7 @@ export default function ProjectEuler4Page() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-10 px-4 rounded-lg -mt-20">
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-zinc-900 dark:to-zinc-900/60 py-10 px-4 rounded-lg -mt-20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -260,12 +281,23 @@ export default function ProjectEuler4Page() {
         {/* Problem */}
         <Card className="p-6">
           <motion.h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            Project Euler Problem 4 — Largest Palindrome Product
+            Problem 4: Largest Palindrome Product
           </motion.h1>
-          <div className="prose p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            <pre className="whitespace-pre-wrap mb-3 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white">
-              {problemDescription}
-            </pre>
+          <div className="prose dark:prose-invert max-w-none">
+            <p>
+              A palindromic number reads the same forward and backward. For
+              two-digit factors the maximum example is{" "}
+              <span dangerouslySetInnerHTML={{ __html: samplePalindrome }} />,
+              showcasing how symmetry appears in multiplication.
+            </p>
+            <p>
+              For a general digit length{" "}
+              <span dangerouslySetInnerHTML={{ __html: renderMath(`n`) }} />, we
+              examine factor pairs between{" "}
+              <span dangerouslySetInnerHTML={{ __html: hiLabel }} /> and{" "}
+              <span dangerouslySetInnerHTML={{ __html: loLabel }} /> to locate
+              the greatest palindromic product.
+            </p>
           </div>
         </Card>
 
@@ -274,10 +306,35 @@ export default function ProjectEuler4Page() {
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
             How to Solve
           </h2>
-          <div className="prose p-4 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg whitespace-pre-wrap mb-2 text-gray-900 dark:text-white">
-              {explanation}
-            </pre>
+          <div className="prose dark:prose-invert max-w-none">
+            <p>
+              Descend <span dangerouslySetInnerHTML={{ __html: iteratorI }} />{" "}
+              from <span dangerouslySetInnerHTML={{ __html: hiLabel }} /> to{" "}
+              <span dangerouslySetInnerHTML={{ __html: loLabel }} />. For each
+              outer value, walk{" "}
+              <span dangerouslySetInnerHTML={{ __html: iteratorJ }} /> downward
+              and exit early whenever{" "}
+              <span dangerouslySetInnerHTML={{ __html: pruneCheck }} /> because
+              no larger palindrome can appear for this{" "}
+              <span dangerouslySetInnerHTML={{ __html: iteratorI }} />.
+            </p>
+            <p>
+              Every even-length palindrome is divisible by{" "}
+              <span dangerouslySetInnerHTML={{ __html: divisibilityHint }} />,
+              so if <span dangerouslySetInnerHTML={{ __html: iteratorI }} /> is
+              not a multiple we only test{" "}
+              <span dangerouslySetInnerHTML={{ __html: iteratorJ }} /> values
+              that are. This reduces the inner loop dramatically without missing
+              any candidates.
+            </p>
+            <p>
+              Iterate <span dangerouslySetInnerHTML={{ __html: iteratorJ }} />{" "}
+              down to <span dangerouslySetInnerHTML={{ __html: iteratorI }} />{" "}
+              to avoid duplicate pairs. The first time{" "}
+              <span dangerouslySetInnerHTML={{ __html: productExpression }} />{" "}
+              reads the same forwards and backwards, update the best answer,
+              capture the factors, and break the inner loop before continuing.
+            </p>
           </div>
 
           <Separator className="my-6" />
@@ -339,7 +396,8 @@ export default function ProjectEuler4Page() {
               className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg"
             >
               <p className="text-lg font-semibold text-blue-900 dark:text-blue-100">
-                Largest palindrome (two {digits}-digit numbers): {answer}
+                Largest palindrome (two {digits}-digit numbers):{" "}
+                <span className="text-green-400">{answer}</span>
               </p>
               <p className="text-sm text-blue-900 dark:text-blue-100 mt-1">
                 Factors: <strong>{factors.a}</strong> ×{" "}
@@ -394,6 +452,15 @@ export default function ProjectEuler4Page() {
             <strong>j = 913</strong>.
           </p>
         </Card>
+
+        <div className="flex flex-col gap-3 sm:flex-row sm:justify-between">
+          <Button variant="outline" asChild>
+            <Link href="/notebook/project-euler-3">Previous Problem</Link>
+          </Button>
+          <Button asChild>
+            <Link href="/notebook/project-euler-5">Next Problem</Link>
+          </Button>
+        </div>
       </motion.div>
     </main>
   );
