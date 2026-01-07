@@ -8,30 +8,30 @@ import { Separator } from "@/components/ui/separator";
 import { renderMath } from "@/lib/renderMath";
 import { ShikiCodeBlock } from "@/components/shiki-code-block";
 import { Button } from "@/components/ui/button";
-import { smallestMult } from "./code";
+import { sumSquareDifference } from "./code";
 
-const MAX_N = 30;
+const MAX_N = 1000;
 
 const codeSolution = `
-function gcd(a, b) {
-  while (b !== 0) {
-    const temp = b;
-    b = a % b;
-    a = temp;
+function sumSquareDifference(n) {
+  // Square of the sum: (1 + 2 + ... + n)^2
+  let sum = 0;
+  for (let i = 1; i <= n; i++) {
+    sum += i;
   }
-  return a;
-}
+  const squareOfSum = sum * sum;
 
-function smallestMult(n) {
-  let a = 1;
-  for (let b = 2; b <= n; b++) {
-    a = (a * b) / gcd(a, b);
+  // Sum of squares: 1^2 + 2^2 + ... + n^2
+  let sumOfSquares = 0;
+  for (let i = 1; i <= n; i++) {
+    sumOfSquares += i * i;
   }
-  return a;
+
+  return squareOfSum - sumOfSquares;
 }
 `.trim();
 
-export default function ProjectEuler5Page() {
+export default function ProjectEuler6Page() {
   const [input, setInput] = useState("10");
   const [result, setResult] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -66,8 +66,8 @@ export default function ProjectEuler5Page() {
     }
 
     const n = Number(input);
-    const smallestMultiple = smallestMult(n);
-    setResult(smallestMultiple);
+    const difference = sumSquareDifference(n);
+    setResult(difference);
     setError(null);
     setIsCalculated(true);
   };
@@ -80,24 +80,23 @@ export default function ProjectEuler5Page() {
   };
 
   // Render formulas with KaTeX
-  const gcdFormula = renderMath(`\\text{GCD}(a, b)`);
-  const lcmFormula = renderMath(
-    `\\text{LCM}(a, b) = \\frac{a \\times b}{\\text{GCD}(a, b)}`,
+  const sumOfSquaresFormula = renderMath(
+    `1^2 + 2^2 + \\cdots + n^2 = \\frac{n(n+1)(2n+1)}{6}`,
     true
   );
-  const euclidTitle = renderMath(`\\text{Euclid's Algorithm}`, true);
 
-  const euclidSteps = renderMath(
-    `
-\\begin{aligned}
-\\text{Given two numbers } a \\text{ and } b, \\\\
-1. &\\text{ If } b = 0, \\text{ then } \\text{GCD}(a, b) = a. \\\\
-2. &\\text{ Otherwise, compute } \\text{GCD}(b, a \\bmod b). \\\\
-3. &\\text{ Repeat until } b = 0.
-\\end{aligned}
-`,
+  const squareOfSumFormula = renderMath(
+    `(1 + 2 + \\cdots + n)^2 = \\left(\\frac{n(n+1)}{2}\\right)^2`,
     true
   );
+
+  const differenceFormula = renderMath(
+    `\\text{Difference} = \\left(\\frac{n(n+1)}{2}\\right)^2 - \\frac{n(n+1)(2n+1)}{6}`,
+    true
+  );
+
+  const exampleSum = renderMath(`1^2 + 2^2 + \\cdots + 10^2 = 385`);
+  const exampleSquare = renderMath(`(1 + 2 + \\cdots + 10)^2 = 55^2 = 3025`);
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-zinc-900 dark:to-zinc-900/60 py-10 px-4 rounded-lg -mt-20">
@@ -110,28 +109,33 @@ export default function ProjectEuler5Page() {
         >
           <Card className="p-6">
             <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Problem 5: Smallest multiple
+              Problem 6: Sum Square Difference
             </h1>
             <div className="prose dark:prose-invert max-w-none">
+              <p>The sum of the squares of the first ten natural numbers is,</p>
+              <div
+                className="my-4 text-center"
+                dangerouslySetInnerHTML={{ __html: exampleSum }}
+              />
+              <p>The square of the sum of the first ten natural numbers is,</p>
+              <div
+                className="my-4 text-center"
+                dangerouslySetInnerHTML={{ __html: exampleSquare }}
+              />
               <p>
+                Hence the difference between the sum of the squares of the first
+                ten natural numbers and the square of the sum is{" "}
                 <span
-                  dangerouslySetInnerHTML={{ __html: renderMath(`2520`) }}
-                />{" "}
-                is the smallest number that can be divided by each of the
-                numbers from{" "}
-                <span dangerouslySetInnerHTML={{ __html: renderMath(`1`) }} />{" "}
-                to{" "}
-                <span dangerouslySetInnerHTML={{ __html: renderMath(`10`) }} />{" "}
-                without any remainder.
-                <br />
-                <br />
-                What is the smallest positive number that is evenly divisible by
-                all of the numbers from{" "}
-                <span
-                  dangerouslySetInnerHTML={{ __html: renderMath(`1`) }}
-                />{" "}
-                to{" "}
-                <span dangerouslySetInnerHTML={{ __html: renderMath(`n`) }} /> ?
+                  dangerouslySetInnerHTML={{
+                    __html: renderMath(`3025 - 385 = 2640`),
+                  }}
+                />
+                .
+              </p>
+              <p className="mt-4">
+                Find the difference between the sum of the squares of the first{" "}
+                <span dangerouslySetInnerHTML={{ __html: renderMath(`n`) }} />{" "}
+                natural numbers and the square of the sum.
               </p>
             </div>
           </Card>
@@ -150,52 +154,46 @@ export default function ProjectEuler5Page() {
 
             <div className="prose dark:prose-invert max-w-none">
               <p>
-                We’re looking for the least common multiple of numbers 1 through{" "}
-                <span className="font-mono">n</span>. The relationship between
-                GCD and LCM is expressed as:
+                We need to compute two values and find their difference. There
+                are well-known mathematical formulas for both:
               </p>
 
-              {/* LCM Formula */}
+              <h4 className="text-lg font-semibold mt-4 mb-2">
+                Sum of Squares
+              </h4>
+              <p>The sum of the squares of the first n natural numbers:</p>
               <div
                 className="my-4 text-center"
-                dangerouslySetInnerHTML={{ __html: lcmFormula }}
+                dangerouslySetInnerHTML={{ __html: sumOfSquaresFormula }}
+              />
+
+              <h4 className="text-lg font-semibold mt-4 mb-2">
+                Square of the Sum
+              </h4>
+              <p>The square of the sum of the first n natural numbers:</p>
+              <div
+                className="my-4 text-center"
+                dangerouslySetInnerHTML={{ __html: squareOfSumFormula }}
+              />
+
+              <h4 className="text-lg font-semibold mt-4 mb-2">
+                The Difference
+              </h4>
+              <p>
+                The difference between the square of the sum and the sum of
+                squares:
+              </p>
+              <div
+                className="my-4 text-center"
+                dangerouslySetInnerHTML={{ __html: differenceFormula }}
               />
 
               <p>
-                Here, the greatest common divisor{" "}
-                <span
-                  dangerouslySetInnerHTML={{ __html: gcdFormula }}
-                  className="text-blue-500"
-                />{" "}
-                is computed efficiently using:
-              </p>
-
-              {/* Euclid's Algorithm */}
-              <div
-                className="my-4 text-center"
-                dangerouslySetInnerHTML={{ __html: euclidTitle }}
-              />
-              <div
-                className="my-4 text-center"
-                dangerouslySetInnerHTML={{ __html: euclidSteps }}
-              />
-
-              <p>
-                By applying this recursively, we can determine the{" "}
-                <span
-                  dangerouslySetInnerHTML={{ __html: gcdFormula }}
-                  className="text-blue-500"
-                />{" "}
-                of any two numbers quickly. Then, we combine them iteratively to
-                find the overall{" "}
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: renderMath("\\text{LCM}(1, 2, ..., n)"),
-                  }}
-                  className="text-blue-500"
-                />{" "}
-                — the smallest number evenly divisible by all integers from 1 to{" "}
-                <span className="font-mono">n</span>.
+                For smaller values of{" "}
+                <span dangerouslySetInnerHTML={{ __html: renderMath(`n`) }} />,
+                we can simply iterate through each number, computing the sum and
+                sum of squares directly. For larger values, the closed-form
+                formulas above provide a more efficient solution.
               </p>
             </div>
 
@@ -282,7 +280,7 @@ export default function ProjectEuler5Page() {
                 className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg"
               >
                 <p className="text-lg font-semibold text-blue-900 dark:text-blue-100">
-                  Smallest multiple for 1 to {input}:{" "}
+                  Sum square difference for n = {input}:{" "}
                   <span className="font-mono text-green-400">{result}</span>
                 </p>
               </motion.div>
@@ -292,10 +290,7 @@ export default function ProjectEuler5Page() {
 
         <div className="flex justify-between">
           <Button variant="outline" asChild>
-            <Link href="/notebook/project-euler-4">Previous Problem</Link>
-          </Button>
-          <Button asChild>
-            <Link href="/notebook/project-euler-6">Next Problem</Link>
+            <Link href="/notebook/project-euler-5">Previous Problem</Link>
           </Button>
         </div>
       </div>
