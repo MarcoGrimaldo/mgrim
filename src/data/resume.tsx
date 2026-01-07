@@ -238,8 +238,22 @@ export const DATA = {
   ],
   hackathons: [
     {
-      title: "#6: Sum square difference",
+      title: "#7: 10001st prime",
       dates: "Currently working on it...",
+      description: "Find the 10,001st prime number.",
+      image:
+        "https://images.emojiterra.com/google/noto-emoji/unicode-16.0/color/svg/1f6a0.svg",
+      links: [
+        {
+          title: "Web problem",
+          icon: <Icons.globe className="h-4 w-4" />,
+          href: "https://projecteuler.net/problem=7",
+        },
+      ],
+    },
+    {
+      title: "#6: Sum square difference",
+      dates: "Done!",
       description:
         "Find the difference between the sum of the squares of the first n natural numbers and the square of the sum.",
       image:
