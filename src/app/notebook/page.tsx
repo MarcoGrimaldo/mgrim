@@ -2,9 +2,11 @@ import React from "react";
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
 import { MagicCardProblem } from "@/components/ui/MagicCardProblem";
-import { DATA } from "@/data/resume";
+import { getResume } from "@/data/resume";
 
-export default function NotebookPage() {
+export default async function NotebookPage() {
+  const DATA = await getResume();
+
   return (
     <main className="p-1">
       <BlurFadeText

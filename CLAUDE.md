@@ -25,11 +25,11 @@ Import alias: `@/*` → `src/*`.
 ```
 src/
   app/
-    layout.tsx              root layout: metadata from DATA, ThemeProvider, TooltipProvider, Navbar dock
-    page.tsx                home page ("use client"); renders every section from DATA
+    layout.tsx              root layout: generateMetadata from getResume(), ThemeProvider, TooltipProvider, Navbar dock
+    page.tsx                home page (async server component); renders every section from getResume()
     globals.css             Tailwind layers, theme variables, KaTeX stylesheet import
     notebook/
-      page.tsx              index of problems, from DATA.eulerProblems
+      page.tsx              index of problems, from eulerProblems
       project-euler-N/
         page.tsx            one interactive write-up per problem
         code.js             the solution function (problems 4+)
@@ -38,23 +38,27 @@ src/
     magicui/                Magic UI components (blur-fade, dock, globe, magic-card, ...)
     shiki-code-block.tsx    client-side, theme-aware code highlighting
     navbar.tsx, project-card.tsx, resume-card.tsx, hackathon-card.tsx, ...
-  data/resume.tsx           DATA — single source of truth for all site content
+  data/resume.tsx           getResume() — fetches all site content from the mgrim-portal API; NAVBAR dock links
   lib/
     utils.ts                cn()
     renderMath.ts           renderMath(expr, displayMode) → KaTeX HTML string
 public/                     avatar, logos, project videos (.mov)
 ```
 
-## Content lives in `src/data/resume.tsx`
+## Content lives in the mgrim-portal backend
 
-All copy, links, and lists come from the `DATA` object (`as const`). Change content there, not in the components. It is a `.tsx` file because entries embed icon JSX.
+Copy, links, and lists are not in this repo. They are stored in Supabase and served by the REST API in the separate `mgrim-portal` repo. `getResume()` in `src/data/resume.tsx` fetches `GET {PORTAL_API_URL}/resume` (server-side, revalidated hourly) and returns the object the pages render. `PORTAL_API_URL` is required: without it `pnpm build` fails. See `.env.example`.
+
+To change content, edit the rows in the Supabase dashboard, or add a migration in `mgrim-portal` when the change should reach every environment. Do not hardcode content in components.
+
+Icons arrive from the API as keys of the `Icons` map in `src/components/icons.tsx` (`"globe"`, `"github"`, `"nextjs"`); `getResume()` turns them into components. A new icon needs an entry in that map.
 
 Two keys have names that don't match what they render:
 
-- `DATA.hackathons` — a leftover name from the template. It drives the home page's Project Euler timeline (newest first, including the in-progress problem with `dates: "Currently working on it..."`).
-- `DATA.eulerProblems` — drives the `/notebook` index cards (oldest first in the data; the page reverses it).
+- `hackathons` — a leftover name from the template. It drives the home page's Project Euler timeline (newest first, including the in-progress problem with `dates: "Currently working on it..."`).
+- `eulerProblems` — drives the `/notebook` index cards (oldest first in the data; the page reverses it).
 
-`DATA.navbar` defines the dock links; `DATA.contact.social` entries with `navbar: true` also appear there.
+`NAVBAR` in `src/data/resume.tsx` defines the dock links; `contact.social` entries with `navbar: true` also appear there.
 
 ## Adding a Project Euler problem
 
@@ -65,9 +69,9 @@ Take `src/app/notebook/project-euler-6/` as the reference.
    - The source shown on the page is a separate `codeSolution` template string passed to `<ShikiCodeBlock code={...} lang="javascript" />`. It is a hand-kept copy of `code.js`, so update both together.
    - Formulas: `renderMath(latex, displayMode)` plus `dangerouslySetInnerHTML`. Backslashes must be escaped in the string (`\\frac`, `\\cdots`).
 3. Add a "Next Problem" link to problem N−1's page; the newest problem only has "Previous Problem".
-4. In `src/data/resume.tsx`:
-   - append an entry to `eulerProblems` (emoji-prefixed title, description, `link`);
-   - in `hackathons`, mark the problem "Done!" and add the "My solution here" link, then add the next problem at the top as the in-progress entry.
+4. In `mgrim-portal`, add a migration (see `supabase/migrations/*_euler_problems_5_to_7.sql` for the pattern) that:
+   - inserts a row into `euler_problems` (emoji-prefixed title, description, `link`, next `sort_order`);
+   - in `hackathons`, marks the problem "Done!" and adds the "My solution here" link, then inserts the next problem at the top (`sort_order` 1, shifting the others) as the in-progress entry.
 
 ## Conventions
 
