@@ -2,23 +2,12 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ShikiCodeBlock } from "@/components/shiki-code-block";
-
-const problemDescription = `
-If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. 
-The sum of these multiples is 23. 
-Find the sum of all the multiples of 3 or 5 below the provided parameter value number.
-`;
-
-const explanation = `
-To solve this problem, iterate through all numbers less than the given parameter.
-For each number, check if it is divisible by 3 or 5.
-If it is, add it to a running total.
-Return the total sum after checking all numbers.
-`;
+import { renderMath } from "@/lib/renderMath";
 
 function sumMultiplesOf3Or5(limit: number): number {
   let sum = 0;
@@ -47,6 +36,18 @@ export default function ProjectEuler1Page() {
   const [result, setResult] = useState<number | null>(null);
   const [isCalculated, setIsCalculated] = useState(false);
 
+  const limitTen = renderMath(`10`);
+  const multiplesExample = renderMath(`3,\\ 5,\\ 6,\\ 9`);
+  const sampleSum = renderMath(`23`);
+  const variableN = renderMath(`n`);
+  const iteratorSymbol = renderMath(`i`);
+  const iterationRange = renderMath(`0 \\le i < n`);
+  const linearTime = renderMath(`O(n)`);
+  const constantSpace = renderMath(`O(1)`);
+  const divisibilityRule = renderMath(
+    `i \\bmod 3 = 0 \\quad \\text{or} \\quad i \\bmod 5 = 0`
+  );
+
   const handleTest = () => {
     const num = parseInt(input, 10);
     if (!isNaN(num)) {
@@ -64,7 +65,7 @@ export default function ProjectEuler1Page() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 py-10 px-4 rounded-lg -mt-20">
+    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-zinc-900 dark:to-zinc-900/60 py-10 px-4 rounded-lg -mt-20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -77,17 +78,28 @@ export default function ProjectEuler1Page() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            Project Euler Problem 1
+            Problem 1: Multiples of 3 or 5
           </motion.h1>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3 }}
           >
-            <div className="prose p-4 bg-gray-100 dark:bg-gray-800 rounded-lg ">
-              <pre className="whitespace-pre-wrap mb-3 bg-gray-100  dark:bg-gray-800 text-gray-900 dark:text-white">
-                {problemDescription}
-              </pre>
+            <div className="prose dark:prose-invert max-w-none">
+              <p>
+                If we list all natural numbers below{" "}
+                <span dangerouslySetInnerHTML={{ __html: limitTen }} /> that are
+                multiples of 3 or 5, we obtain{" "}
+                <span dangerouslySetInnerHTML={{ __html: multiplesExample }} />.
+                Their sum is{" "}
+                <span dangerouslySetInnerHTML={{ __html: sampleSum }} />.
+              </p>
+              <p>
+                The general task asks for the sum of every number smaller than{" "}
+                <span dangerouslySetInnerHTML={{ __html: variableN }} /> that is
+                divisible by 3 or 5. This is the classic warm-up problem that
+                teaches clean iteration and modular arithmetic.
+              </p>
             </div>
           </motion.div>
         </Card>
@@ -101,10 +113,27 @@ export default function ProjectEuler1Page() {
             <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4">
               How to Solve
             </h2>
-            <div className="prose p-4 bg-gray-100 dark:bg-gray-800 rounded-lg ">
-              <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg whitespace-pre-wrap mb-2 text-gray-900 dark:text-white">
-                {explanation}
-              </pre>
+            <div className="prose dark:prose-invert max-w-none">
+              <p>
+                Iterate through every integer{" "}
+                <span dangerouslySetInnerHTML={{ __html: iteratorSymbol }} />{" "}
+                satisfying{" "}
+                <span dangerouslySetInnerHTML={{ __html: iterationRange }} />{" "}
+                and evaluate the divisibility test.
+              </p>
+              <p>
+                Add the number to a running sum when{" "}
+                <span dangerouslySetInnerHTML={{ __html: divisibilityRule }} />{" "}
+                holds; otherwise skip it.
+              </p>
+              <p>
+                This single pass runs in{" "}
+                <span dangerouslySetInnerHTML={{ __html: linearTime }} /> time
+                with only{" "}
+                <span dangerouslySetInnerHTML={{ __html: constantSpace }} />{" "}
+                extra space, matching the straightforward implementation shown
+                below.
+              </p>
             </div>
 
             <Separator className="my-6" />
@@ -174,12 +203,19 @@ export default function ProjectEuler1Page() {
                 className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg"
               >
                 <p className="text-lg font-semibold text-blue-900 dark:text-blue-100">
-                  Sum of multiples of 3 or 5 below {input}: {result}
+                  Sum of multiples of 3 or 5 below {input}:{" "}
+                  <span className="text-green-400">{result}</span>
                 </p>
               </motion.div>
             )}
           </motion.div>
         </Card>
+
+        <div className="flex justify-end">
+          <Button asChild>
+            <Link href="/notebook/project-euler-2">Next Problem</Link>
+          </Button>
+        </div>
       </motion.div>
     </main>
   );

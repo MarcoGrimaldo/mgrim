@@ -238,8 +238,42 @@ export const DATA = {
   ],
   hackathons: [
     {
+      title: "#7: 10001st prime",
+      dates: "Currently working on it...",
+      description: "Find the 10,001st prime number.",
+      image:
+        "https://images.emojiterra.com/google/noto-emoji/unicode-16.0/color/svg/1f6a0.svg",
+      links: [
+        {
+          title: "Web problem",
+          icon: <Icons.globe className="h-4 w-4" />,
+          href: "https://projecteuler.net/problem=7",
+        },
+      ],
+    },
+    {
+      title: "#6: Sum square difference",
+      dates: "Done!",
+      description:
+        "Find the difference between the sum of the squares of the first n natural numbers and the square of the sum.",
+      image:
+        "https://images.emojiterra.com/google/noto-emoji/unicode-16.0/color/svg/32-20e3.svg",
+      links: [
+        {
+          title: "Web problem",
+          icon: <Icons.globe className="h-4 w-4" />,
+          href: "https://projecteuler.net/problem=6",
+        },
+        {
+          title: "My solution here",
+          icon: <Icons.nextjs className="h-4 w-4" />,
+          href: "/notebook/project-euler-6",
+        },
+      ],
+    },
+    {
       title: "#5: Smallest multiple",
-      dates: "Currently working on...",
+      dates: "Done!",
       description:
         "Find smallest positive number that is evenly divisible by all of the numbers from 1 to n.",
       image:
@@ -249,6 +283,11 @@ export const DATA = {
           title: "Web problem",
           icon: <Icons.globe className="h-4 w-4" />,
           href: "https://projecteuler.net/problem=5",
+        },
+        {
+          title: "My solution here",
+          icon: <Icons.nextjs className="h-4 w-4" />,
+          href: "/notebook/project-euler-5",
         },
       ],
     },
@@ -316,6 +355,18 @@ export const DATA = {
       description:
         "Find the largest palindrome made from the product of two n-digit numbers, where n is the provided parameter value number.",
       link: "/notebook/project-euler-4",
+    },
+    {
+      title: "🔢 Smallest Multiple",
+      description:
+        "Find the smallest positive number that is evenly divisible by all of the numbers from 1 to n, where n is the provided parameter value number.",
+      link: "/notebook/project-euler-5",
+    },
+    {
+      title: "🧮 Sum Square Difference",
+      description:
+        "Find the difference between the sum of the squares of the first n natural numbers and the square of the sum.",
+      link: "/notebook/project-euler-6",
     },
   ],
 } as const;
