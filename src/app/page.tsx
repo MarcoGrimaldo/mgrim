@@ -8,12 +8,16 @@ import { Badge } from "@/components/ui/badge";
 import { getResume } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
+import Clarity from '@microsoft/clarity';
+// Make sure to add your actual project id instead of "yourProjectId".
 
 const BLUR_FADE_DELAY = 0.04;
 
 export default async function Page() {
   const DATA = await getResume();
+  const projectId = "tvexv3flpt";
 
+  Clarity.init(projectId);
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">
       <section id="hero">
