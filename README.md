@@ -31,11 +31,28 @@ Built with next.js, [shadcn/ui](https://ui.shadcn.com/), and [magic ui](https://
    pnpm install
    ```
 
-4. Start the local Server:
+4. Point the app at the backend API:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+   Set `PORTAL_API_URL` to the staging API, or to `http://127.0.0.1:54321/functions/v1/api` when running the [mgrim-portal](https://github.com/MarcoGrimaldo/mgrim-portal) stack locally.
+
+5. Start the local Server:
 
    ```bash
    pnpm dev
    ```
+
+# Content and environments
+
+The resume content (profile, work, education, skills, projects) is served by the REST API in the `mgrim-portal` repo, which runs on Supabase. This app only calls `GET /resume` through `getResume()` in `src/data/resume.tsx`. Content edits appear on the site within an hour, without a redeploy.
+
+| Branch    | Vercel environment | `PORTAL_API_URL` points at |
+| --------- | ------------------ | -------------------------- |
+| `main`    | Production         | production Supabase project |
+| `staging` | Preview            | staging Supabase project    |
 
 # License
 
