@@ -1,18 +1,21 @@
-import { HackathonCard } from "@/components/hackathon-card";
 import BlurFade from "@/components/magicui/blur-fade";
 import BlurFadeText from "@/components/magicui/blur-fade-text";
+import { PostCard } from "@/components/post-card";
 import { ProjectCard } from "@/components/project-card";
 import { ResumeCard } from "@/components/resume-card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { getPosts } from "@/data/blog";
 import { getResume } from "@/data/resume";
 import Link from "next/link";
 import Markdown from "react-markdown";
 
 const BLUR_FADE_DELAY = 0.04;
+const RECENT_POSTS = 4;
 
 export default async function Page() {
-  const DATA = await getResume();
+  const [DATA, posts] = await Promise.all([getResume(), getPosts()]);
+  const recentPosts = posts.slice(0, RECENT_POSTS);
 
   return (
     <main className="flex flex-col min-h-[100dvh] space-y-10">
@@ -164,50 +167,50 @@ export default async function Page() {
           </div>
         </div>
       </section>
-      <section id="hackathons">
-        <div className="space-y-12 w-full py-12">
-          <BlurFade delay={BLUR_FADE_DELAY * 13}>
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
-                  Problem Solving
+      {recentPosts.length > 0 && (
+        <section id="blog">
+          <div className="space-y-12 w-full py-12">
+            <BlurFade delay={BLUR_FADE_DELAY * 13}>
+              <div className="flex flex-col items-center justify-center space-y-4 text-center">
+                <div className="space-y-2">
+                  <div className="inline-block rounded-lg bg-foreground text-background px-3 py-1 text-sm">
+                    Blog
+                  </div>
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
+                    Recent posts
+                  </h2>
+                  <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                    Notes on software, problem solving and things I&apos;m
+                    learning.
+                  </p>
                 </div>
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Project Euler
-                </h2>
-                <p className="text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  I enjoy problem-solving, so I set a goal to complete as many
-                  challenges as possible from the massive Project Euler archive.
-                  These problems help strengthen my algorithmic thinking and
-                  mathematical skills.
-                  <br />
-                  The challenges vary in difficulty, and many build on each
-                  other — solving one often introduces new concepts that unlock
-                  previously harder problems.
-                </p>
               </div>
-            </div>
-          </BlurFade>
-          <BlurFade delay={BLUR_FADE_DELAY * 14}>
-            <ul className="mb-4 ml-4 divide-y divide-dashed border-l">
-              {DATA.hackathons.map((project, id) => (
+            </BlurFade>
+            <div className="flex flex-col gap-3">
+              {recentPosts.map((post, id) => (
                 <BlurFade
-                  key={project.title + project.dates}
-                  delay={BLUR_FADE_DELAY * 15 + id * 0.05}
+                  key={post.slug}
+                  delay={BLUR_FADE_DELAY * 14 + id * 0.05}
                 >
-                  <HackathonCard
-                    title={project.title}
-                    description={project.description}
-                    dates={project.dates}
-                    image={project.image}
-                    links={project.links}
-                  />
+                  <PostCard post={post} />
                 </BlurFade>
               ))}
-            </ul>
-          </BlurFade>
-        </div>
-      </section>
+            </div>
+            {posts.length > recentPosts.length && (
+              <BlurFade delay={BLUR_FADE_DELAY * 15}>
+                <div className="text-center">
+                  <Link
+                    href="/blog"
+                    className="text-sm text-blue-500 hover:underline"
+                  >
+                    View all posts
+                  </Link>
+                </div>
+              </BlurFade>
+            )}
+          </div>
+        </section>
+      )}
       <section id="contact">
         <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
           <BlurFade delay={BLUR_FADE_DELAY * 16}>

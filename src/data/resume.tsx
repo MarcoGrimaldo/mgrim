@@ -1,10 +1,11 @@
 import { Icons } from "@/components/icons";
+import { portalUrl } from "@/lib/portal";
 import { HomeIcon, NotebookIcon } from "lucide-react";
 import { cache } from "react";
 
 export const NAVBAR = [
   { href: "/", icon: HomeIcon, label: "Home" },
-  { href: "/notebook", icon: NotebookIcon, label: "Notebook" },
+  { href: "/blog", icon: NotebookIcon, label: "Blog" },
 ];
 
 // Content edited in the backend shows up on the site within this many seconds.
@@ -56,14 +57,6 @@ type ResumeResponse = {
     image: string;
     video: string;
   }[];
-  hackathons: {
-    title: string;
-    dates: string;
-    description: string;
-    image: string;
-    links: { title: string; href: string; icon: string }[];
-  }[];
-  eulerProblems: { title: string; description: string; link: string }[];
 };
 
 // Unknown icon keys fall back to the globe.
@@ -72,14 +65,7 @@ function getIcon(key: string) {
 }
 
 async function fetchResume(): Promise<ResumeResponse> {
-  const apiUrl = process.env.PORTAL_API_URL;
-  if (!apiUrl) {
-    throw new Error(
-      "Missing PORTAL_API_URL. Copy .env.example to .env.local and fill it in."
-    );
-  }
-
-  const res = await fetch(`${apiUrl.replace(/\/$/, "")}/resume`, {
+  const res = await fetch(portalUrl("/resume"), {
     next: { revalidate: REVALIDATE_SECONDS },
   });
   if (!res.ok) {
@@ -89,7 +75,7 @@ async function fetchResume(): Promise<ResumeResponse> {
 }
 
 export const getResume = cache(async () => {
-  const { profile, socialLinks, skills, projects, hackathons, ...rest } =
+  const { profile, socialLinks, skills, projects, ...rest } =
     await fetchResume();
   const { email, tel, ...about } = profile;
 
@@ -110,13 +96,6 @@ export const getResume = cache(async () => {
       links: project.links.map((link) => {
         const Icon = getIcon(link.icon);
         return { ...link, icon: <Icon className="size-3" /> };
-      }),
-    })),
-    hackathons: hackathons.map((hackathon) => ({
-      ...hackathon,
-      links: hackathon.links.map((link) => {
-        const Icon = getIcon(link.icon);
-        return { ...link, icon: <Icon className="h-4 w-4" /> };
       }),
     })),
   };

@@ -47,7 +47,17 @@ Built with next.js, [shadcn/ui](https://ui.shadcn.com/), and [magic ui](https://
 
 # Content and environments
 
-The resume content (profile, work, education, skills, projects) is served by the REST API in the `mgrim-portal` repo, which runs on Supabase. This app only calls `GET /resume` through `getResume()` in `src/data/resume.tsx`. Content edits appear on the site within an hour, without a redeploy.
+The resume content (profile, work, education, skills, projects) and the blog posts are served by the REST API in the `mgrim-portal` repo, which runs on Supabase. This app calls it from the server only: `getResume()` in `src/data/resume.tsx` and `getPosts()` / `getPost()` in `src/data/blog.ts`. Resume edits appear on the site within an hour, without a redeploy.
+
+# Blog
+
+Posts are written in Markdown (GFM, code blocks, KaTeX math) from a private dashboard:
+
+- `/admin/login` — sign in with a Supabase Auth user that is listed in the backend's `admins` table.
+- `/admin` — every post with its status (draft, published, unpublished), views, search, filters and sorting; publish, unpublish, feature or delete from the list.
+- `/admin/posts/new` and `/admin/posts/<id>` — the editor, with a live preview.
+
+Published posts appear on `/blog`, on the home page (the four most recent), in the RSS feed at `/blog/rss.xml` and in `/sitemap.xml`. Changes made in the dashboard are visible on the site immediately.
 
 | Branch    | Vercel environment | `PORTAL_API_URL` points at |
 | --------- | ------------------ | -------------------------- |
