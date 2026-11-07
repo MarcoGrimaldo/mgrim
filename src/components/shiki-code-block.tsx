@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { codeToHtml } from "shiki/bundle/web";
 
 const SHIKI_THEMES = {
   light: "github-light",
@@ -12,6 +11,9 @@ const SHIKI_THEMES = {
 type ThemeVariant = keyof typeof SHIKI_THEMES;
 
 const highlightWithTheme = async (code: string, lang: string, theme: ThemeVariant) => {
+  // Loaded on demand: a static import turns this into an async module, which a
+  // server component cannot render as a client reference.
+  const { codeToHtml } = await import("shiki/bundle/web");
   const html = await codeToHtml(code, {
     lang,
     theme: SHIKI_THEMES[theme],
